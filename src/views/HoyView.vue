@@ -5,13 +5,18 @@ import { DATA, getRecipe } from '../data'
 import { state } from '../store'
 import { now } from '../lib/now'
 import { formatLong, formatShort } from '../lib/dates'
-import { cards, cycleWeek, night, prepShopping, puente, startDate, today, todayISO, tupperToday } from '../lib/day'
+import { cards, cycleWeek, dinnerFromYesterday, night, plural, prepPlan, prepShopping, puente, startDate, today, todayISO, tupperToday } from '../lib/day'
 import { showToast } from '../lib/toast'
 import TupperCard from '../components/TupperCard.vue'
 
 const router = useRouter()
 const comodin = getRecipe(DATA.comodin)
-const reserveUsedToday = computed(() => !!state.reserveUsed[todayISO.value])
+const usedToday = computed(() => state.reserveUsed[todayISO.value] || 0)
+/** "Usar uno": solo cuando hoy no hay tupper (o comes fuera no hace falta) */
+const canUseReserve = computed(
+  () => state.reserve > 0 && !tupperToday.value && usedToday.value < state.settings.servings,
+)
+const pending = computed(() => prepShopping.value.total - prepShopping.value.done)
 
 const noTupperReason = computed(() => {
   if (puente.value) return `Aún no ha empezado el ciclo: la semana 1 empieza el lunes ${formatShort(startDate.value)}.`
@@ -26,18 +31,19 @@ function nightDone() {
 }
 
 function useReserve() {
-  if (state.reserve <= 0) return
+  if (!canUseReserve.value) return
   const k = todayISO.value
   state.reserve--
-  state.reserveUsed[k] = true
-  showToast('Sacado de la reserva 🧊', 'Deshacer', () => {
-    state.reserve++
-    delete state.reserveUsed[k]
-  })
+  state.reserveUsed[k] = (state.reserveUsed[k] || 0) + 1
+  showToast('Sacado de la reserva 🧊', 'Deshacer', () => undoReserve(k))
 }
-function undoReserve() {
+/** Devuelve UNO a la reserva (si se usaron dos, quedan uno) */
+function undoReserve(k = todayISO.value) {
+  const n = state.reserveUsed[k] || 0
+  if (n <= 0) return
   state.reserve++
-  delete state.reserveUsed[todayISO.value]
+  if (n === 1) delete state.reserveUsed[k]
+  else state.reserveUsed[k] = n - 1
 }
 const hello = computed(() => {
   const h = now.value.getHours()
@@ -70,7 +76,7 @@ const hello = computed(() => {
         <span class="prep-ic">🛒</span>
         <span class="grow">
           <b>Toca compra · Semana {{ c.semana }}</b>
-          <span class="muted small">{{ prepShopping.total - prepShopping.done === 0 ? 'Compra hecha ✓' : prepShopping.total - prepShopping.done + ' productos' }}</span>
+          <span class="muted small">{{ pending === 0 ? 'Compra hecha ✓' : plural(pending, 'producto', 'productos') }}</span>
         </span>
         <span class="arrow">›</span>
       </router-link>
@@ -84,8 +90,8 @@ const hello = computed(() => {
       <div v-else class="card prep hot">
         <span class="prep-ic">👨‍🍳</span>
         <span class="grow">
-          <b>Hoy cocinas · Semana {{ c.semana }}</b>
-          <span class="muted small">Plato 1 + Plato 2, paso a paso con temporizadores.</span>
+          <b>{{ c.kind === 'cocinar-pendiente' ? 'Te queda cocinar la semana ' + c.semana : 'Hoy cocinas · Semana ' + c.semana }}</b>
+          <span v-if="prepPlan" class="muted small">{{ prepPlan.plato1.name }} + {{ prepPlan.plato2.name }}, paso a paso con temporizadores.</span>
           <button class="btn primary" @click="router.push('/cocinar')">Ir al modo cocina</button>
         </span>
       </div>
@@ -94,14 +100,18 @@ const hello = computed(() => {
     <!-- El tupper de hoy -->
     <TupperCard v-if="tupperToday" :t="tupperToday" />
 
-    <section v-else-if="reserveUsedToday" class="card stack-sm">
+    <section v-if="usedToday" class="card stack-sm">
       <span class="chip ice">De la reserva</span>
-      <h2>Hoy: tupper de la reserva 🧊</h2>
-      <p class="muted">Viene congelado: desde congelado tarda el doble. Plato de horno → air fryer 180 °C. Plato con salsa → sartén con un chorrito de agua, a fuego medio, removiendo.</p>
-      <button class="btn ghost" @click="undoReserve">Deshacer</button>
+      <h2>Hoy: {{ usedToday > 1 ? usedToday + ' tuppers' : 'tupper' }} de la reserva 🧊</h2>
+      <p class="muted">Viene congelado: desde congelado tarda el doble.</p>
+      <ul class="res-how">
+        <li><b>Plato de horno</b> → air fryer a 180 °C (el salmón, a 160 °C), con la comida volcada en la cesta.</li>
+        <li><b>Plato con salsa</b> → sartén o cazo con un chorrito de agua, a fuego medio, removiendo.</li>
+      </ul>
+      <button class="btn ghost" @click="undoReserve()">Deshacer</button>
     </section>
 
-    <section v-else class="card stack-sm">
+    <section v-else-if="!tupperToday" class="card stack-sm">
       <span class="chip comodin">Sin tupper</span>
       <h2>{{ noTupperReason }}</h2>
       <p class="muted">Tira de las comidas de siempre o del comodín:</p>
@@ -115,12 +125,13 @@ const hello = computed(() => {
     <!-- Reserva -->
     <div v-if="state.reserve > 0" class="card reserve">
       <span class="grow"><b>🧊 Reserva: {{ state.reserve }}</b><span class="muted small">Para un día sin tupper</span></span>
-      <button class="btn small" @click="useReserve">Usar uno</button>
+      <button v-if="canUseReserve" class="btn small" @click="useReserve">Usar uno</button>
     </div>
 
     <!-- Comidas fijas -->
     <section class="stack-sm">
       <h3 class="muted">Comidas de siempre</h3>
+      <div v-if="dinnerFromYesterday" class="banner yellow">🍽️ Para cenar hoy: el tupper de ayer ({{ dinnerFromYesterday.recipe.name }}). Como mucho hoy.</div>
       <div v-for="m in DATA.comidasFijas" :key="m.id" class="card tight meal">
         <span class="meal-ic">{{ m.emoji }}</span>
         <span class="grow">
@@ -225,6 +236,15 @@ const hello = computed(() => {
 .meal b,
 .meal .small {
   display: block;
+}
+.res-how {
+  margin: 0;
+  padding: 0 0 0 18px;
+  color: var(--ink-2);
+  font-size: 16px;
+}
+.res-how li + li {
+  margin-top: 6px;
 }
 .meal .small + .small {
   margin-top: 4px;

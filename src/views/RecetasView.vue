@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { DATA, getRecipe } from '../data'
 import { cycleWeek, prepPlan } from '../lib/day'
+import { state } from '../store'
 
 const weeks = (['1', '2', '3'] as const).map(w => ({
   n: Number(w),
@@ -28,7 +29,7 @@ const typeLabel = (t: string) => (t === 'horno' ? 'Horno' : t === 'salsa' ? 'Sal
         <span class="grow">
           <span class="chip" :class="r.type">Plato {{ i + 1 }} · {{ typeLabel(r.type) }}</span>
           <b>{{ r.name }}</b>
-          <span class="small muted">{{ r.tuppers }} tuppers · ~{{ r.minutes }} min<template v-if="r.tag"> · {{ r.tag }}</template></span>
+          <span class="small muted">{{ r.tuppers * state.settings.servings }} tuppers · ~{{ r.minutes }} min<template v-if="r.tag"> · {{ r.tag }}</template></span>
         </span>
         <span class="arrow">›</span>
       </router-link>

@@ -3,18 +3,25 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { DATA } from '../data'
 import { resetState, state } from '../store'
-import { formatLong, fromISO, mondayOf, toISO } from '../lib/dates'
+import { daysBetween, formatLong, fromISO, mondayOf, toISO } from '../lib/dates'
+import { today } from '../lib/day'
 import { showToast } from '../lib/toast'
 import type { CookDay, Servings } from '../lib/plan'
 
 const router = useRouter()
-const startLabel = computed(() => formatLong(fromISO(state.settings.startDate)))
+const startLabel = computed(() => formatLong(fromISO(state.settings.startDate)).toLowerCase())
+const started = computed(() => daysBetween(fromISO(state.settings.startDate), today.value) >= 0)
 
 function setStart(e: Event) {
-  const v = (e.target as HTMLInputElement).value
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return
+  const input = e.target as HTMLInputElement
+  const v = input.value
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) {
+    input.value = state.settings.startDate // vacío o raro: se deja como estaba
+    return
+  }
   const monday = toISO(mondayOf(fromISO(v)))
   state.settings.startDate = monday
+  input.value = monday // que el campo muestre el lunes, aunque elijas otro día de esa semana
   if (monday !== v) showToast('Ajustado al lunes de esa semana')
 }
 function setCookDay(d: CookDay) {
@@ -32,7 +39,11 @@ function reset() {
   resetState()
   router.replace('/bienvenida')
 }
-const version = __APP_VERSION__
+// Versión en hora local (la de compilación viene en UTC)
+const version = (() => {
+  const d = new Date(__APP_VERSION__)
+  return isNaN(d.getTime()) ? __APP_VERSION__ : d.toLocaleString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+})()
 </script>
 
 <template>
@@ -47,7 +58,7 @@ const version = __APP_VERSION__
         <span>Fecha de inicio (un lunes)</span>
         <input class="input" type="date" :value="state.settings.startDate" @change="setStart" />
       </label>
-      <p class="small muted">La semana 1 del ciclo empieza el {{ startLabel }}.</p>
+      <p class="small muted">La semana 1 del ciclo {{ started ? 'empezó' : 'empieza' }} el {{ startLabel }}.</p>
     </section>
 
     <section class="card stack-sm">
@@ -85,17 +96,17 @@ const version = __APP_VERSION__
 
     <section class="card stack-sm">
       <h3>Despensa</h3>
-      <p class="small muted">Lo que tienes en casa no sale en la lista de la compra.</p>
+      <p class="small muted">"En casa" no sale en la lista de la compra. Toca para cambiarlo cuando se acabe o lo compres.</p>
       <ul class="pantry">
         <li v-for="p in DATA.despensa" :key="p.id">
           <span class="grow">{{ p.name }}</span>
-          <button class="pill" :class="{ have: state.pantryHave[p.id] }" @click="togglePantry(p.id)">{{ state.pantryHave[p.id] ? 'Me queda' : 'Se ha acabado' }}</button>
+          <button class="pill" :class="{ have: state.pantryHave[p.id] }" :aria-pressed="!!state.pantryHave[p.id]" @click="togglePantry(p.id)">{{ state.pantryHave[p.id] ? '🏠 En casa' : '🛒 En la lista' }}</button>
         </li>
       </ul>
     </section>
 
     <button class="btn danger" @click="reset">Restablecer datos</button>
-    <p class="tiny muted center">Tuppers · versión {{ version.slice(0, 16).replace('T', ' ') }}</p>
+    <p class="tiny muted center">Tuppers · versión {{ version }}</p>
   </main>
 </template>
 
@@ -122,13 +133,14 @@ const version = __APP_VERSION__
 }
 .pill {
   min-height: 44px;
-  padding: 0 14px;
+  padding: 0 12px;
   border-radius: 12px;
   font-weight: 800;
   font-size: 15px;
-  background: var(--red-bg);
-  color: var(--red);
-  min-width: 130px;
+  background: var(--surface-2);
+  color: var(--ink-2);
+  white-space: nowrap;
+  margin-left: 8px;
 }
 .pill.have {
   background: var(--green-bg);

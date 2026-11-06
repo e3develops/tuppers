@@ -22,6 +22,13 @@ export interface ManualItem {
   id: string
   name: string
   section: Section
+  /** Semana (lunes, AAAA-MM-DD) en que se compró */
+  boughtWeek?: string
+}
+
+/** Lo añadido a mano sale cada semana hasta que se compra; ya comprado, solo en la semana en que se compró */
+export function visibleManual<T extends ManualItem>(items: T[], weekISO: string): T[] {
+  return items.filter(m => !m.boughtWeek || m.boughtWeek === weekISO)
 }
 
 /** Ingredientes de varias recetas sumados (mismo producto y misma unidad), multiplicados por factor */

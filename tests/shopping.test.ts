@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { DATA, getRecipe } from '../src/data'
 import { SECTION_ORDER } from '../src/data/types'
 import { formatQty, roundQty } from '../src/lib/qty'
-import { buildShoppingList, scaleRecipe, sumIngredients } from '../src/lib/shopping'
+import { buildShoppingList, scaleRecipe, sumIngredients, visibleManual } from '../src/lib/shopping'
 
 const semana1 = [getRecipe('contramuslos'), getRecipe('garbanzos-chorizo')]
 const byName = (items: ReturnType<typeof buildShoppingList>, name: string) => items.filter(i => i.name === name)
@@ -64,6 +64,20 @@ describe('lista de la compra', () => {
     const p = byName(items, 'Papel de horno')[0]
     expect(p.manual).toBe(true)
     expect(items[items.length - 1].section).toBe('Otros')
+  })
+})
+
+describe('productos añadidos a mano', () => {
+  const items = [
+    { id: 'a', name: 'Lejía', section: 'Otros' as const },
+    { id: 'b', name: 'Papel de horno', section: 'Otros' as const, boughtWeek: '2026-11-16' },
+  ]
+  it('lo apuntado el miércoles sigue saliendo el viernes (semana siguiente) hasta comprarlo', () => {
+    expect(visibleManual(items, '2026-11-09').map(m => m.id)).toEqual(['a'])
+    expect(visibleManual(items, '2026-11-16').map(m => m.id)).toEqual(['a', 'b'])
+  })
+  it('lo ya comprado solo sale (tachado) en la semana en que se compró', () => {
+    expect(visibleManual(items, '2026-11-23').map(m => m.id)).toEqual(['a'])
   })
 })
 

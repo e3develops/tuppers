@@ -32,7 +32,7 @@ const typeLabel = computed(() => (recipe.value ? (recipe.value.type === 'horno' 
     <header class="stack-sm">
       <span class="chip" :class="recipe.type">{{ typeLabel }}</span>
       <h1>{{ recipe.name }}</h1>
-      <p class="muted">~{{ recipe.minutes }} min · {{ recipe.type === 'comodin' ? '1 ración' : recipe.tuppers + ' tuppers' }}<template v-if="recipe.tag"> · {{ recipe.tag }}</template></p>
+      <p class="muted">~{{ recipe.minutes }} min · {{ recipe.type === 'comodin' ? '1 ración' : recipe.tuppers * state.settings.servings + ' tuppers' }}<template v-if="recipe.tag"> · {{ recipe.tag }}</template></p>
     </header>
 
     <section class="card stack-sm">

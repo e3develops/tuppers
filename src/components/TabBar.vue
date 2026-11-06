@@ -14,7 +14,7 @@ const active = (name: string) => route.name === name || (name === 'recetas' && r
 // Puntito amarillo cuando toca comprar o cocinar hoy
 const dot = computed(() => ({
   compra: cards.value.some(c => c.kind === 'compra') && prepShopping.value.done < prepShopping.value.total,
-  cocinar: cards.value.some(c => c.kind === 'cocinar-hoy'),
+  cocinar: cards.value.some(c => c.kind === 'cocinar-hoy' || c.kind === 'cocinar-pendiente'),
 }))
 </script>
 

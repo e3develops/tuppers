@@ -3,8 +3,8 @@ import { computed } from 'vue'
 import type { Recipe } from '../data/types'
 import { reheatFor } from '../lib/reheat'
 
-const props = defineProps<{ recipe: Recipe }>()
-const info = computed(() => reheatFor(props.recipe))
+const props = withDefaults(defineProps<{ recipe: Recipe; frozen?: boolean }>(), { frozen: true })
+const info = computed(() => reheatFor(props.recipe, props.frozen))
 </script>
 
 <template>

@@ -102,8 +102,9 @@ describe('tupper de cada día', () => {
     expect(tupperLabels('viernes').every(x => x.storage === 'congelador')).toBe(true)
   })
   it('"Hoy como fuera"', () => {
-    expect(eatOutAdvice('nevera')).toBe('congelar')
-    expect(eatOutAdvice('congelador')).toBe('cena')
+    expect(eatOutAdvice('nevera', false)).toBe('congelar') // recién hecho: se congela, a la reserva
+    expect(eatOutAdvice('congelador', true)).toBe('cena') // descongelado anoche: cena en 24 h
+    expect(eatOutAdvice('congelador', false)).toBe('reserva') // no se sacó: sigue congelado
   })
 })
 

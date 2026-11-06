@@ -144,7 +144,15 @@ export function tupperLabels(cookDay: CookDay): TupperLabel[] {
   return labels
 }
 
-/** "Hoy como fuera": recién hecho en la nevera → al congelador (reserva); ya descongelado → cena en 24 h */
-export function eatOutAdvice(storage: Storage): 'congelar' | 'cena' {
-  return storage === 'nevera' ? 'congelar' : 'cena'
+export type EatOut = 'congelar' | 'cena' | 'reserva'
+
+/**
+ * "Hoy como fuera":
+ * - en la nevera sin haberse congelado nunca → al congelador, queda de reserva
+ * - venía del congelador y se descongeló anoche → cena en 24 h (no se vuelve a congelar)
+ * - venía del congelador y NO se sacó anoche → sigue congelado: se queda de reserva
+ */
+export function eatOutAdvice(storage: Storage, thawed: boolean): EatOut {
+  if (storage === 'nevera') return 'congelar'
+  return thawed ? 'cena' : 'reserva'
 }

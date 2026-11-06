@@ -5,11 +5,11 @@ import { DATA, findRecipe } from '../data'
 import type { CookPlanStep, Recipe } from '../data/types'
 import { state } from '../store'
 import { ui } from '../ui'
-import { prepPlan, prepWeekISO } from '../lib/day'
+import { plural, prepPlan, prepWeekISO } from '../lib/day'
 import { tupperLabels } from '../lib/plan'
 import { remaining, startTimer, timerFor } from '../lib/timers'
 import { unlockAudio } from '../lib/audio'
-import { keepAwake, releaseAwake } from '../lib/wakelock'
+import { awake, keepAwake, releaseAwake } from '../lib/wakelock'
 import { showToast } from '../lib/toast'
 
 const route = useRoute()
@@ -40,7 +40,12 @@ const dishes = computed<Recipe[]>(() => (single.value ? [single.value] : week.va
 type Mode = 'inicio' | 'pasos' | 'reparte'
 const mode = ref<Mode>('inicio')
 const idx = ref(0)
-const saved = computed(() => (state.cook && state.cook.key === key.value ? state.cook.step : -1))
+// Paso guardado de este modo cocina (si ya no existe, p. ej. tras editar data.json, se ignora)
+const saved = computed(() => {
+  const n = state.cookSteps[key.value]
+  return typeof n === 'number' && n >= 0 && n < steps.value.length ? n : -1
+})
+const alreadyCooked = computed(() => !single.value && !!week.value && !!state.cooked[prepWeekISO.value])
 
 watch(key, () => {
   mode.value = 'inicio'
@@ -48,10 +53,12 @@ watch(key, () => {
 })
 
 function begin(from = 0) {
+  if (!steps.value.length) return
+  from = Math.max(0, Math.min(from, steps.value.length - 1))
   unlockAudio()
   keepAwake()
   idx.value = from
-  state.cook = { key: key.value, step: from }
+  state.cookSteps[key.value] = from
   mode.value = 'pasos'
   ui.hideTabs = true
   window.scrollTo(0, 0)
@@ -66,7 +73,7 @@ function go(d: number) {
     return
   }
   idx.value = n
-  if (state.cook) state.cook.step = n
+  state.cookSteps[key.value] = n
   window.scrollTo(0, 0)
 }
 function exit() {
@@ -78,11 +85,12 @@ function finish() {
   const wk = prepWeekISO.value
   let msg = '¡Listo! A disfrutarlo 😋'
   if (!single.value && !state.cooked[wk]) {
-    state.cooked[wk] = true
+    // Se guarda con qué día de cocinar se hizo (nevera/congelador de esa semana)
+    state.cooked[wk] = state.settings.cookDay
     state.reserve += state.settings.servings
     msg = `¡Semana lista! +${state.settings.servings} a la reserva 🧊`
   }
-  state.cook = null
+  delete state.cookSteps[key.value]
   exit()
   showToast(msg)
   router.push('/')
@@ -93,6 +101,10 @@ onUnmounted(() => {
 })
 
 const step = computed(() => steps.value[idx.value])
+// Si el paso no existe (datos cambiados), de vuelta al inicio en vez de una pantalla en blanco
+watch(step, s => {
+  if (!s && mode.value === 'pasos') exit()
+})
 const stepRecipe = computed(() => (step.value && step.value.recipe ? findRecipe(step.value.recipe) : undefined))
 const timer = computed(() => (step.value && step.value.timerMin ? timerFor(step.value.timerLabel || 'Temporizador', step.value.timerMin) : undefined))
 function startStepTimer() {
@@ -122,11 +134,15 @@ const plateType = (p: 1 | 2) => (week.value ? (p === 1 ? week.value.plato1.type 
       <div v-for="(d, i) in dishes" :key="d.id" class="card dish" :class="d.type">
         <span class="chip" :class="d.type">{{ single ? (d.type === 'horno' ? 'Horno' : d.type === 'salsa' ? 'Salsa' : 'Comodín') : 'Plato ' + (i + 1) + ' · ' + (d.type === 'horno' ? 'Horno' : 'Salsa') }}</span>
         <h2>{{ d.name }}</h2>
-        <p class="muted small">{{ d.tuppers * state.settings.servings }} tuppers · ~{{ d.minutes }} min</p>
+        <p class="muted small">{{ d.type === 'comodin' ? plural(state.settings.servings, 'ración', 'raciones') : d.tuppers * state.settings.servings + ' tuppers' }} · ~{{ d.minutes }} min</p>
       </div>
       <div class="card tight spread">
-        <span><b>⏱ Tiempo total: ~{{ totalMin }} min</b><span class="small muted block">{{ steps.length }} pasos · la pantalla no se apagará</span></span>
+        <span>
+          <b>⏱ Tiempo total: ~{{ totalMin }} min<template v-if="single && single.type !== 'comodin'"> + 20 min de enfriar</template></b>
+          <span class="small muted block">{{ plural(steps.length, 'paso', 'pasos') }} · intentaré que la pantalla no se apague</span>
+        </span>
       </div>
+      <div v-if="alreadyCooked" class="banner green">✓ Esta semana ya está cocinada. Puedes repasar los pasos si quieres.</div>
       <div class="btns">
         <button v-if="saved > 0" class="btn primary big" @click="begin(saved)">▶ Seguir por el paso {{ saved + 1 }}</button>
         <button class="btn big" :class="{ primary: saved <= 0 }" @click="begin(0)">{{ saved > 0 ? 'Empezar de nuevo' : '▶ Empezar' }}</button>
@@ -146,6 +162,7 @@ const plateType = (p: 1 | 2) => (week.value ? (p === 1 ? week.value.plato1.type 
       <button class="btn ghost small" @click="exit">✕ Salir</button>
       <b>Paso {{ idx + 1 }} de {{ steps.length }}</b>
     </div>
+    <p v-if="awake" class="tiny muted awake">🔆 Pantalla encendida</p>
     <div class="dots"><i v-for="(_, i) in steps" :key="i" :class="{ on: i <= idx }"></i></div>
 
     <span v-if="stepRecipe" class="chip" :class="stepRecipe.type">{{ stepRecipe.name }}</span>
@@ -160,7 +177,7 @@ const plateType = (p: 1 | 2) => (week.value ? (p === 1 ? week.value.plato1.type 
 
     <div v-if="step.meanwhile" class="meanwhile">
       <b>Mientras tanto</b>
-      <p>{{ step.meanwhile.replace(/^Mientras tanto:\s*/, '') }}</p>
+      <p>{{ step.meanwhile }}</p>
     </div>
 
     <div class="cook-nav">
@@ -223,6 +240,9 @@ const plateType = (p: 1 | 2) => (week.value ? (p === 1 ? week.value.plato1.type 
 }
 .cook-top .btn {
   margin-left: -10px;
+}
+.awake {
+  margin: -4px 0 8px;
 }
 .dots {
   display: flex;

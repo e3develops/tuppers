@@ -2,26 +2,32 @@
 import { computed } from 'vue'
 import type { TupperOfDay } from '../lib/plan'
 import { eatOutAdvice } from '../lib/plan'
+import { addDays, fromISO, toISO } from '../lib/dates'
 import { state } from '../store'
 import { showToast } from '../lib/toast'
 import ReheatBlock from './ReheatBlock.vue'
 
 const props = defineProps<{ t: TupperOfDay }>()
 const eatOut = computed(() => state.eatOut[props.t.date])
+/** ¿Marcaste anoche que lo pasabas del congelador a la nevera? */
+const thawed = computed(() => !!state.nightDone[toISO(addDays(fromISO(props.t.date), -1))])
 
 const where = computed(() => {
-  if (props.t.storage === 'nevera') return '🥶 Está en la nevera: recién hecho.'
-  return '❄️ Lo pasaste anoche del congelador a la nevera.'
+  if (props.t.storage === 'nevera') return '🥶 Está en la nevera (lo cocinaste el domingo).'
+  if (thawed.value) return '❄️ Lo pasaste anoche del congelador a la nevera.'
+  return '❄️ Venía del congelador. Si no lo sacaste anoche, se puede desde congelado: tarda el doble.'
 })
 
 function comoFuera() {
-  const advice = eatOutAdvice(props.t.storage)
+  const advice = eatOutAdvice(props.t.storage, thawed.value)
   state.eatOut[props.t.date] = advice
-  if (advice === 'congelar') state.reserve++
-  showToast(advice === 'congelar' ? 'Al congelador: +1 a la reserva 🧊' : 'Apuntado: cómelo como cena en 24 h', 'Deshacer', undo)
+  if (advice !== 'cena') state.reserve++
+  const msg = advice === 'cena' ? 'Apuntado: te lo recuerdo para la cena de mañana' : 'Queda de reserva: +1 🧊'
+  showToast(msg, 'Deshacer', undo)
 }
 function undo() {
-  if (state.eatOut[props.t.date] === 'congelar') state.reserve = Math.max(0, state.reserve - 1)
+  const a = state.eatOut[props.t.date]
+  if (a && a !== 'cena') state.reserve = Math.max(0, state.reserve - 1)
   delete state.eatOut[props.t.date]
 }
 </script>
@@ -33,7 +39,8 @@ function undo() {
     </div>
     <h2 class="tp-name">{{ t.recipe.name }}</h2>
     <div v-if="eatOut === 'congelar'" class="banner ice">🧊 Mételo al congelador: queda de reserva.</div>
-    <div v-else class="banner yellow">🍽️ Cómelo mañana o pasado como cena, máximo 24 h.</div>
+    <div v-else-if="eatOut === 'reserva'" class="banner ice">🧊 Déjalo en el congelador: queda de reserva.</div>
+    <div v-else class="banner yellow">🍽️ Ya está descongelado: cómelo esta noche o mañana como cena, como mucho en 24 h.</div>
     <button class="btn ghost" @click="undo">Deshacer</button>
   </section>
 
@@ -45,7 +52,7 @@ function undo() {
     <p class="tp-kicker">Hoy toca</p>
     <h2 class="tp-name">{{ t.recipe.name }}</h2>
     <p class="tp-where">{{ where }}</p>
-    <ReheatBlock :recipe="t.recipe" />
+    <ReheatBlock :recipe="t.recipe" :frozen="t.storage === 'congelador'" />
     <button class="btn" @click="comoFuera">🍽️ Hoy como fuera</button>
   </section>
 </template>

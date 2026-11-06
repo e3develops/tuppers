@@ -15,16 +15,16 @@ export interface ReheatInfo {
   notes: string[]
 }
 
-export const FIXED_NOTES = [
-  'Vuelca la comida: el tupper no entra en la air fryer.',
-  'Mejor descongelado la noche antes. Si se te olvidó, se puede desde congelado, pero tarda el doble.',
-]
+export const NOTE_DUMP = 'Vuelca la comida: el tupper no entra en la air fryer.'
+export const NOTE_FROZEN = 'Mejor descongelado la noche antes. Si se te olvidó, se puede desde congelado, pero tarda el doble.'
 
 export function hasRice(r: Recipe): boolean {
   return r.ingredients.some(i => i.id === 'arroz-basmati')
 }
 
-export function reheatFor(r: Recipe): ReheatInfo {
+/** `frozen`: el tupper venía del congelador (añade el aviso de descongelar) */
+export function reheatFor(r: Recipe, frozen = true): ReheatInfo {
+  const notes = frozen ? [NOTE_DUMP, NOTE_FROZEN] : [NOTE_DUMP]
   const rice = !hasRice(r)
     ? undefined
     : r.type === 'salsa'
@@ -42,7 +42,7 @@ export function reheatFor(r: Recipe): ReheatInfo {
       ],
       onlyNote: 'No hay alternativa: es la mejor forma.',
       rice,
-      notes: FIXED_NOTES,
+      notes,
     }
   }
   return {
@@ -55,6 +55,6 @@ export function reheatFor(r: Recipe): ReheatInfo {
       },
     ],
     rice,
-    notes: FIXED_NOTES,
+    notes,
   }
 }

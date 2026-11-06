@@ -3,16 +3,18 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { state } from '../store'
 import { formatLong, fromISO, mondayOf, nextMonday, toISO } from '../lib/dates'
+import { now } from '../lib/now'
 import type { CookDay, Servings } from '../lib/plan'
 
 const router = useRouter()
-const start = ref(toISO(nextMonday(new Date())))
+const start = ref(toISO(nextMonday(now.value)))
 const cookDay = ref<CookDay>('viernes')
 const servings = ref<Servings>(1)
 
 function setStart(e: Event) {
-  const v = (e.target as HTMLInputElement).value
-  if (/^\d{4}-\d{2}-\d{2}$/.test(v)) start.value = toISO(mondayOf(fromISO(v)))
+  const input = e.target as HTMLInputElement
+  if (/^\d{4}-\d{2}-\d{2}$/.test(input.value)) start.value = toISO(mondayOf(fromISO(input.value)))
+  input.value = start.value // siempre el lunes de esa semana
 }
 function go() {
   state.settings.startDate = start.value

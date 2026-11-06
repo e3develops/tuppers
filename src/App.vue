@@ -1,21 +1,14 @@
 <script setup lang="ts">
-import { computed, watchEffect } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import TabBar from './components/TabBar.vue'
 import TimerBar from './components/TimerBar.vue'
-import { state } from './store'
 import { toast, hideToast } from './lib/toast'
 import { ui } from './ui'
 import { isTimeTravel, now } from './lib/now'
 
 const route = useRoute()
 const showTabs = computed(() => route.name !== 'bienvenida' && !ui.hideTabs)
-
-// Altura de la barra de temporizadores, para que no tape el contenido
-watchEffect(() => {
-  const n = state.timers.length
-  document.documentElement.style.setProperty('--timers', n ? n * 58 + 6 + 'px' : '0px')
-})
 
 function act() {
   const fn = toast.onAction
