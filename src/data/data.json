@@ -1,0 +1,279 @@
+{
+  "ciclo": {
+    "1": { "plato1": "contramuslos", "plato2": "garbanzos-chorizo" },
+    "2": { "plato1": "pollo-teriyaki", "plato2": "bolonesa" },
+    "3": { "plato1": "salmon", "plato2": "curry-pollo" }
+  },
+  "comodin": "comodin",
+  "recetas": [
+    {
+      "id": "contramuslos",
+      "name": "Contramuslos al horno con patata",
+      "type": "horno",
+      "tuppers": 3,
+      "minutes": 55,
+      "ingredients": [
+        { "id": "contramuslos", "name": "Contramuslos de pollo", "qty": 1000, "unit": "g", "section": "Carne y pescado" },
+        { "id": "patatas", "name": "Patatas", "qty": 800, "unit": "g", "section": "Fruta y verdura" },
+        { "id": "pimiento-rojo", "name": "Pimiento rojo", "qty": 1, "unit": "ud", "section": "Fruta y verdura" },
+        { "id": "cebolla", "name": "Cebolla", "qty": 1, "unit": "ud", "section": "Fruta y verdura" },
+        { "id": "aceite-oliva", "name": "Aceite de oliva", "section": "Despensa" },
+        { "id": "sal", "name": "Sal", "section": "Despensa" },
+        { "id": "ajo-polvo", "name": "Ajo en polvo", "qty": 1, "unit": "cdta", "section": "Despensa" },
+        { "id": "pimenton-dulce", "name": "Pimentón dulce", "qty": 1, "unit": "cdta", "section": "Despensa" },
+        { "id": "oregano", "name": "Orégano", "section": "Despensa" }
+      ],
+      "steps": [
+        { "text": "Enciende el horno a 200 °C." },
+        { "text": "Corta las patatas en dados de 2 cm y el pimiento y la cebolla en tiras. A la bandeja con un chorro de aceite y sal, y remueve con las manos." },
+        { "text": "Unta los contramuslos con aceite, sal, ajo, pimentón y orégano, y colócalos encima con la piel hacia arriba." },
+        { "text": "Al horno 45-50 min. A mitad, remueve las patatas.", "timerMin": 45, "timerLabel": "Horno" },
+        { "text": "Está listo cuando el pollo está dorado y la patata se clava fácil." }
+      ]
+    },
+    {
+      "id": "garbanzos-chorizo",
+      "name": "Garbanzos con chorizo",
+      "type": "salsa",
+      "tuppers": 4,
+      "minutes": 30,
+      "ingredients": [
+        { "id": "garbanzos-cocidos", "name": "Garbanzos cocidos", "qty": 2, "unit": "bote", "section": "Despensa" },
+        { "id": "chorizo", "name": "Chorizo para cocinar", "qty": 150, "unit": "g", "section": "Charcutería y huevos" },
+        { "id": "cebolla", "name": "Cebolla", "qty": 1, "unit": "ud", "section": "Fruta y verdura" },
+        { "id": "pimiento-rojo", "name": "Pimiento rojo", "qty": 1, "unit": "ud", "section": "Fruta y verdura" },
+        { "id": "tomate-frito", "name": "Tomate frito", "qty": 200, "unit": "ml", "section": "Despensa" },
+        { "id": "pimenton-dulce", "name": "Pimentón dulce", "qty": 1, "unit": "cdta", "section": "Despensa" },
+        { "id": "espinacas", "name": "Espinacas", "qty": 1, "unit": "bolsa", "section": "Fruta y verdura", "optional": true },
+        { "id": "arroz-basmati", "name": "Arroz basmati", "qty": 300, "unit": "g", "section": "Despensa" }
+      ],
+      "steps": [
+        { "text": "Chorizo en dados a la sartén sin aceite, fuego medio, 3 min hasta que suelte la grasa.", "timerMin": 3, "timerLabel": "Chorizo" },
+        { "text": "Añade la cebolla y el pimiento picados, 8 min hasta que estén blandos.", "timerMin": 8, "timerLabel": "Sofrito" },
+        { "text": "Echa el pimentón y remueve solo 10 segundos para que no se queme." },
+        { "text": "Añade los garbanzos escurridos y lavados, el tomate frito y 1 vaso de agua. 15 min a fuego medio. Si usas espinacas, van los últimos 2 min.", "timerMin": 15, "timerLabel": "Garbanzos" },
+        { "text": "Prueba y sala al final, porque el chorizo ya da sal." },
+        { "text": "Arroz: lávalo, ponlo con 1,5 veces su volumen de agua y sal. Cuando hierva, fuego mínimo y tapado 12 min. Luego reposa 5 min tapado.", "timerMin": 12, "timerLabel": "Arroz" }
+      ],
+      "notes": ["Con 2 botes de lentejas sale exactamente igual."]
+    },
+    {
+      "id": "pollo-teriyaki",
+      "name": "Pollo teriyaki al horno con brócoli",
+      "type": "horno",
+      "tuppers": 3,
+      "minutes": 30,
+      "ingredients": [
+        { "id": "pechuga-dados", "name": "Pechuga de pollo en dados", "qty": 700, "unit": "g", "section": "Carne y pescado" },
+        { "id": "brocoli", "name": "Brócoli", "qty": 1, "unit": "ud", "section": "Fruta y verdura", "note": "o 1 bolsa congelada" },
+        { "id": "arroz-basmati", "name": "Arroz basmati", "qty": 300, "unit": "g", "section": "Despensa" },
+        { "id": "salsa-soja", "name": "Salsa de soja", "qty": 6, "unit": "cda", "section": "Despensa" },
+        { "id": "miel", "name": "Miel", "qty": 2, "unit": "cda", "section": "Despensa" },
+        { "id": "ajo-polvo", "name": "Ajo en polvo", "qty": 1, "unit": "cdta", "section": "Despensa" },
+        { "id": "aceite-oliva", "name": "Aceite de oliva", "section": "Despensa" }
+      ],
+      "steps": [
+        { "text": "Enciende el horno a 200 °C." },
+        { "text": "En un bol, mezcla la soja, la miel, el ajo y 1 cucharada de aceite, y remueve ahí el pollo." },
+        { "text": "Bandeja con papel de horno (la miel pega). Extiende el pollo y los ramitos de brócoli, con un chorrito de aceite en el brócoli." },
+        { "text": "Al horno 20-25 min, removiendo a mitad. Si lo quieres más tostadito, 3 min de grill al final.", "timerMin": 22, "timerLabel": "Horno" },
+        { "text": "No añadas sal: la soja ya sala." },
+        { "text": "Arroz como en la receta de garbanzos: lávalo, ponlo con 1,5 veces su volumen de agua y sal. Cuando hierva, fuego mínimo y tapado 12 min. Luego reposa 5 min tapado.", "timerMin": 12, "timerLabel": "Arroz" }
+      ]
+    },
+    {
+      "id": "bolonesa",
+      "name": "Pasta boloñesa",
+      "type": "salsa",
+      "tuppers": 4,
+      "minutes": 35,
+      "tag": "Carne roja de la semana",
+      "ingredients": [
+        { "id": "carne-picada", "name": "Carne picada de ternera o mixta", "qty": 500, "unit": "g", "section": "Carne y pescado" },
+        { "id": "cebolla", "name": "Cebolla", "qty": 1, "unit": "ud", "section": "Fruta y verdura" },
+        { "id": "tomate-triturado", "name": "Tomate triturado", "qty": 1, "unit": "bote", "section": "Despensa", "note": "de 400 g" },
+        { "id": "tomate-frito", "name": "Tomate frito", "qty": 3, "unit": "cda", "section": "Despensa" },
+        { "id": "pasta", "name": "Pasta", "qty": 400, "unit": "g", "section": "Despensa" },
+        { "id": "aceite-oliva", "name": "Aceite de oliva", "section": "Despensa" },
+        { "id": "sal", "name": "Sal", "section": "Despensa" },
+        { "id": "ajo-polvo", "name": "Ajo en polvo", "qty": 1, "unit": "cdta", "section": "Despensa" },
+        { "id": "oregano", "name": "Orégano", "section": "Despensa" }
+      ],
+      "steps": [
+        { "text": "Sofríe la cebolla picada en un chorro de aceite, 6-8 min a fuego medio.", "timerMin": 7, "timerLabel": "Cebolla" },
+        { "text": "Añade la carne y desmenúzala. Déjala dorar 8 min removiendo poco para que se tueste.", "timerMin": 8, "timerLabel": "Carne" },
+        { "text": "Echa sal, ajo y orégano, luego el tomate triturado y el frito. 15-20 min a fuego bajo.", "timerMin": 18, "timerLabel": "Salsa" },
+        { "text": "Cuece la pasta 1 minuto menos de lo que dice el paquete (acaba de hacerse al recalentar)." },
+        { "text": "Mezcla la pasta con la salsa y reparte." }
+      ],
+      "notes": ["Variante albóndigas: albóndigas ya hechas, 15 min al horno a 200 °C y luego 10 min en la salsa (sin carne picada). Con patata cocida o arroz."]
+    },
+    {
+      "id": "salmon",
+      "name": "Salmón al horno con patata y brócoli",
+      "type": "horno",
+      "tuppers": 3,
+      "minutes": 40,
+      "reheatTemp": 160,
+      "ingredients": [
+        { "id": "salmon", "name": "Lomos de salmón", "qty": 3, "unit": "ud", "section": "Carne y pescado", "note": "de 150-180 g, valen congelados" },
+        { "id": "patatas", "name": "Patatas", "qty": 800, "unit": "g", "section": "Fruta y verdura" },
+        { "id": "brocoli", "name": "Brócoli", "qty": 1, "unit": "ud", "section": "Fruta y verdura" },
+        { "id": "limon", "name": "Limón", "qty": 1, "unit": "ud", "section": "Fruta y verdura" },
+        { "id": "aceite-oliva", "name": "Aceite de oliva", "section": "Despensa" },
+        { "id": "sal", "name": "Sal", "section": "Despensa" },
+        { "id": "ajo-polvo", "name": "Ajo en polvo", "section": "Despensa" },
+        { "id": "perejil-seco", "name": "Perejil seco", "section": "Despensa" }
+      ],
+      "steps": [
+        { "text": "Enciende el horno a 200 °C." },
+        { "text": "Patatas en dados de 2 cm con aceite y sal, al horno 20 min.", "timerMin": 20, "timerLabel": "Patatas" },
+        { "text": "Saca la bandeja y añade el brócoli en ramitos y el salmón con la piel abajo. Aceite, sal, ajo, perejil y el zumo de medio limón." },
+        { "text": "12-15 min más. El salmón está listo cuando se separa en láminas.", "timerMin": 13, "timerLabel": "Salmón" },
+        { "text": "Al recalentar: air fryer a 160 °C para que no se seque." }
+      ]
+    },
+    {
+      "id": "curry-pollo",
+      "name": "Curry suave de pollo con garbanzos",
+      "type": "salsa",
+      "tuppers": 4,
+      "minutes": 35,
+      "ingredients": [
+        { "id": "pollo-curry", "name": "Contramuslo deshuesado o pechuga", "qty": 700, "unit": "g", "section": "Carne y pescado" },
+        { "id": "cebolla", "name": "Cebolla", "qty": 1, "unit": "ud", "section": "Fruta y verdura" },
+        { "id": "garbanzos-cocidos", "name": "Garbanzos cocidos", "qty": 1, "unit": "bote", "section": "Despensa" },
+        { "id": "leche-coco", "name": "Leche de coco", "qty": 1, "unit": "lata", "section": "Despensa", "note": "de 400 ml" },
+        { "id": "curry-suave", "name": "Curry en polvo suave", "qty": 2, "unit": "cda", "section": "Despensa" },
+        { "id": "ajo-polvo", "name": "Ajo en polvo", "qty": 1, "unit": "cdta", "section": "Despensa" },
+        { "id": "tomate-frito", "name": "Tomate frito", "qty": 3, "unit": "cda", "section": "Despensa" },
+        { "id": "arroz-basmati", "name": "Arroz basmati", "qty": 300, "unit": "g", "section": "Despensa" },
+        { "id": "aceite-oliva", "name": "Aceite", "section": "Despensa" },
+        { "id": "sal", "name": "Sal", "section": "Despensa" }
+      ],
+      "steps": [
+        { "text": "Sofríe la cebolla picada en un chorro de aceite, 6 min.", "timerMin": 6, "timerLabel": "Cebolla" },
+        { "text": "Añade el pollo en dados con sal y dóralo 6-8 min.", "timerMin": 7, "timerLabel": "Pollo" },
+        { "text": "Echa el curry y el ajo y remueve 30 segundos." },
+        { "text": "Añade la leche de coco, el tomate frito y los garbanzos escurridos. 15 min a fuego medio-bajo hasta que espese.", "timerMin": 15, "timerLabel": "Curry" },
+        { "text": "Arroz como en la receta de garbanzos: lávalo, ponlo con 1,5 veces su volumen de agua y sal. Cuando hierva, fuego mínimo y tapado 12 min. Luego reposa 5 min tapado.", "timerMin": 12, "timerLabel": "Arroz" }
+      ],
+      "notes": ["Compra un curry que ponga \"suave\" en la etiqueta para que no pique."]
+    },
+    {
+      "id": "comodin",
+      "name": "Pasta con atún y tomate",
+      "type": "comodin",
+      "tuppers": 1,
+      "minutes": 10,
+      "ingredients": [
+        { "id": "pasta", "name": "Pasta", "qty": 120, "unit": "g", "section": "Despensa" },
+        { "id": "atun", "name": "Atún", "qty": 1, "unit": "lata", "section": "Despensa" },
+        { "id": "tomate-frito", "name": "Tomate frito", "qty": 4, "unit": "cda", "section": "Despensa" },
+        { "id": "oregano", "name": "Orégano", "section": "Despensa" }
+      ],
+      "steps": [
+        { "text": "Cuece la pasta, escúrrela y mézclala en la misma olla con el atún escurrido, el tomate y el orégano." }
+      ]
+    }
+  ],
+  "planes": {
+    "1": {
+      "totalMin": 75,
+      "steps": [
+        { "recipe": "contramuslos", "text": "Enciende el horno a 200 °C.", "meanwhile": "Mientras se calienta, prepara la bandeja de los contramuslos." },
+        { "recipe": "contramuslos", "text": "Corta las patatas en dados de 2 cm y el pimiento y la cebolla en tiras. A la bandeja con un chorro de aceite y sal, y remueve con las manos." },
+        { "recipe": "contramuslos", "text": "Unta los contramuslos con aceite, sal, ajo, pimentón y orégano, y colócalos encima con la piel hacia arriba." },
+        { "recipe": "contramuslos", "text": "Al horno 45-50 min. A mitad, remueve las patatas.", "timerMin": 45, "timerLabel": "Horno", "meanwhile": "Mientras tanto: los garbanzos en la sartén y el arroz." },
+        { "recipe": "garbanzos-chorizo", "text": "Chorizo en dados a la sartén sin aceite, fuego medio, 3 min hasta que suelte la grasa.", "timerMin": 3, "timerLabel": "Chorizo", "meanwhile": "Mientras tanto: pica la cebolla y el pimiento." },
+        { "recipe": "garbanzos-chorizo", "text": "Añade la cebolla y el pimiento picados, 8 min hasta que estén blandos.", "timerMin": 8, "timerLabel": "Sofrito" },
+        { "recipe": "garbanzos-chorizo", "text": "Echa el pimentón y remueve solo 10 segundos para que no se queme." },
+        { "recipe": "garbanzos-chorizo", "text": "Añade los garbanzos escurridos y lavados, el tomate frito y 1 vaso de agua. 15 min a fuego medio. Si usas espinacas, van los últimos 2 min.", "timerMin": 15, "timerLabel": "Garbanzos", "meanwhile": "Mientras tanto: pon el arroz." },
+        { "recipe": "garbanzos-chorizo", "text": "Arroz: lávalo, ponlo con 1,5 veces su volumen de agua y sal. Cuando hierva, fuego mínimo y tapado 12 min. Luego reposa 5 min tapado.", "timerMin": 12, "timerLabel": "Arroz" },
+        { "recipe": "garbanzos-chorizo", "text": "Prueba los garbanzos y sala al final, porque el chorizo ya da sal." },
+        { "recipe": "contramuslos", "text": "Mira el horno: está listo cuando el pollo está dorado y la patata se clava fácil." },
+        { "text": "Enfría unos 20 min (máximo 2 h fuera de la nevera), reparte y etiqueta.", "timerMin": 20, "timerLabel": "Enfriar" }
+      ]
+    },
+    "2": {
+      "totalMin": 60,
+      "steps": [
+        { "recipe": "pollo-teriyaki", "text": "Enciende el horno a 200 °C.", "meanwhile": "Mientras se calienta, pon el arroz." },
+        { "recipe": "pollo-teriyaki", "text": "Arroz: lávalo, ponlo con 1,5 veces su volumen de agua y sal. Cuando hierva, fuego mínimo y tapado 12 min. Luego reposa 5 min tapado.", "timerMin": 12, "timerLabel": "Arroz", "meanwhile": "Mientras tanto: empieza la boloñesa." },
+        { "recipe": "bolonesa", "text": "Sofríe la cebolla picada en un chorro de aceite, 6-8 min a fuego medio.", "timerMin": 7, "timerLabel": "Cebolla" },
+        { "recipe": "bolonesa", "text": "Añade la carne y desmenúzala. Déjala dorar 8 min removiendo poco para que se tueste.", "timerMin": 8, "timerLabel": "Carne", "meanwhile": "Mientras tanto: prepara el pollo teriyaki en un bol." },
+        { "recipe": "bolonesa", "text": "Echa sal, ajo y orégano, luego el tomate triturado y el frito. 15-20 min a fuego bajo.", "timerMin": 18, "timerLabel": "Salsa", "meanwhile": "Mientras se hace la salsa: la bandeja de pollo y la pasta." },
+        { "recipe": "pollo-teriyaki", "text": "En un bol, mezcla la soja, la miel, el ajo y 1 cucharada de aceite, y remueve ahí el pollo." },
+        { "recipe": "pollo-teriyaki", "text": "Bandeja con papel de horno (la miel pega). Extiende el pollo y los ramitos de brócoli, con un chorrito de aceite en el brócoli. No añadas sal: la soja ya sala." },
+        { "recipe": "pollo-teriyaki", "text": "Al horno 20-25 min, removiendo a mitad. Si lo quieres más tostadito, 3 min de grill al final.", "timerMin": 22, "timerLabel": "Horno", "meanwhile": "Mientras tanto: cuece la pasta." },
+        { "recipe": "bolonesa", "text": "Cuece la pasta 1 minuto menos de lo que dice el paquete (acaba de hacerse al recalentar)." },
+        { "recipe": "bolonesa", "text": "Mezcla la pasta con la salsa." },
+        { "text": "Enfría unos 20 min (máximo 2 h fuera de la nevera), reparte y etiqueta.", "timerMin": 20, "timerLabel": "Enfriar" }
+      ]
+    },
+    "3": {
+      "totalMin": 60,
+      "steps": [
+        { "recipe": "salmon", "text": "Enciende el horno a 200 °C.", "meanwhile": "Mientras se calienta, corta las patatas." },
+        { "recipe": "salmon", "text": "Patatas en dados de 2 cm con aceite y sal, al horno 20 min.", "timerMin": 20, "timerLabel": "Patatas", "meanwhile": "Mientras tanto: empieza el curry y pon el arroz." },
+        { "recipe": "curry-pollo", "text": "Sofríe la cebolla picada en un chorro de aceite, 6 min.", "timerMin": 6, "timerLabel": "Cebolla" },
+        { "recipe": "curry-pollo", "text": "Añade el pollo en dados con sal y dóralo 6-8 min.", "timerMin": 7, "timerLabel": "Pollo" },
+        { "recipe": "curry-pollo", "text": "Echa el curry y el ajo y remueve 30 segundos." },
+        { "recipe": "curry-pollo", "text": "Añade la leche de coco, el tomate frito y los garbanzos escurridos. 15 min a fuego medio-bajo hasta que espese.", "timerMin": 15, "timerLabel": "Curry", "meanwhile": "Mientras tanto: el arroz." },
+        { "recipe": "curry-pollo", "text": "Arroz: lávalo, ponlo con 1,5 veces su volumen de agua y sal. Cuando hierva, fuego mínimo y tapado 12 min. Luego reposa 5 min tapado.", "timerMin": 12, "timerLabel": "Arroz" },
+        { "recipe": "salmon", "text": "Saca la bandeja y añade el brócoli en ramitos y el salmón con la piel abajo. Aceite, sal, ajo, perejil y el zumo de medio limón." },
+        { "recipe": "salmon", "text": "12-15 min más. El salmón está listo cuando se separa en láminas.", "timerMin": 13, "timerLabel": "Salmón" },
+        { "text": "Enfría unos 20 min (máximo 2 h fuera de la nevera), reparte y etiqueta.", "timerMin": 20, "timerLabel": "Enfriar" }
+      ]
+    }
+  },
+  "comidasFijas": [
+    {
+      "id": "desayuno",
+      "title": "Desayuno",
+      "emoji": "🥤",
+      "text": "Batido con 1 vaso de bebida de soja, 50 g de avena, 1 plátano, 1 cda de crema de cacahuete y 1 cdta de miel.",
+      "alt": "Tostadas con huevos, aguacate o jamón."
+    },
+    {
+      "id": "merienda",
+      "title": "Merienda / post-BJJ",
+      "emoji": "🥋",
+      "text": "Yogur de soja con fruta y frutos secos, o bocadillo de jamón o atún."
+    },
+    {
+      "id": "cena",
+      "title": "Cena",
+      "emoji": "🍳",
+      "text": "2-3 huevos (revueltos o en tortilla) o una lata de atún, con pan, aguacate y ensalada de bolsa."
+    }
+  ],
+  "productosFijos": [
+    { "id": "huevos", "name": "Huevos", "qty": 2, "unit": "docena", "section": "Charcutería y huevos" },
+    { "id": "jamon-serrano", "name": "Jamón serrano", "qty": 1, "unit": "paquete", "section": "Charcutería y huevos" },
+    { "id": "atun", "name": "Atún", "qty": 6, "unit": "lata", "section": "Despensa" },
+    { "id": "pan", "name": "Pan", "section": "Panadería" },
+    { "id": "avena", "name": "Copos de avena", "qty": 1, "unit": "paquete", "section": "Despensa" },
+    { "id": "platanos", "name": "Plátanos", "qty": 8, "unit": "ud", "section": "Fruta y verdura" },
+    { "id": "fruta-variada", "name": "Fruta variada", "section": "Fruta y verdura" },
+    { "id": "aguacates", "name": "Aguacates", "qty": 4, "unit": "ud", "section": "Fruta y verdura" },
+    { "id": "ensalada", "name": "Ensalada", "qty": 2, "unit": "bolsa", "section": "Fruta y verdura" },
+    { "id": "bebida-soja", "name": "Bebida de soja", "qty": 2, "unit": "L", "section": "Refrigerados" },
+    { "id": "yogures-soja", "name": "Yogures de soja", "qty": 1, "unit": "pack", "section": "Refrigerados" },
+    { "id": "frutos-secos", "name": "Frutos secos", "qty": 1, "unit": "bolsa", "section": "Despensa" }
+  ],
+  "despensa": [
+    { "id": "aceite-oliva", "name": "Aceite de oliva" },
+    { "id": "sal", "name": "Sal" },
+    { "id": "ajo-polvo", "name": "Ajo en polvo" },
+    { "id": "pimenton-dulce", "name": "Pimentón dulce" },
+    { "id": "oregano", "name": "Orégano" },
+    { "id": "perejil-seco", "name": "Perejil seco" },
+    { "id": "tomate-frito", "name": "Tomate frito" },
+    { "id": "salsa-soja", "name": "Salsa de soja" },
+    { "id": "miel", "name": "Miel" },
+    { "id": "crema-cacahuete", "name": "Crema de cacahuete" },
+    { "id": "curry-suave", "name": "Curry suave" },
+    { "id": "arroz-basmati", "name": "Arroz basmati" }
+  ]
+}

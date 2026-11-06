@@ -1,0 +1,520 @@
+/* Tuppers · tema oscuro, letra grande, pensado para una mano (y las manos mojadas).
+   Compatible con Safari 12: sin gap en flex (se usan márgenes), sin aspect-ratio, sin inset ni unidades de viewport dinámicas. */
+:root {
+  --bg: #0d1015;
+  --surface: #171b22;
+  --surface-2: #212732;
+  --line: #2c3340;
+  --ink: #f4f6f9;
+  --ink-2: #b4bdca;
+  --ink-3: #828c9c;
+  --accent: #5b8cff;
+  --accent-2: #3f6fe0;
+  --orange: #ff9f45;
+  --orange-bg: rgba(255, 159, 69, 0.14);
+  --red: #ff6b6b;
+  --red-bg: rgba(255, 107, 107, 0.14);
+  --yellow: #ffd54a;
+  --yellow-bg: rgba(255, 213, 74, 0.14);
+  --green: #42d392;
+  --green-bg: rgba(66, 211, 146, 0.14);
+  --ice: #7cc8ff;
+  --ice-bg: rgba(124, 200, 255, 0.13);
+  --radius: 18px;
+  --tabbar: 66px;
+  --sat: 0px;
+  --sab: 0px;
+  --sal: 0px;
+  --sar: 0px;
+}
+@supports (padding: constant(safe-area-inset-top)) {
+  :root {
+    --sat: constant(safe-area-inset-top);
+    --sab: constant(safe-area-inset-bottom);
+    --sal: constant(safe-area-inset-left);
+    --sar: constant(safe-area-inset-right);
+  }
+}
+@supports (padding: env(safe-area-inset-top)) {
+  :root {
+    --sat: env(safe-area-inset-top);
+    --sab: env(safe-area-inset-bottom);
+    --sal: env(safe-area-inset-left);
+    --sar: env(safe-area-inset-right);
+  }
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+}
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.45;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+button,
+input,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+button {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+h1 {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+h2 {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+h3 {
+  font-size: 19px;
+  font-weight: 800;
+}
+a {
+  color: inherit;
+}
+
+/* ---------- Página ---------- */
+.page {
+  /* --timers: alto de la barra de temporizadores (la pone App.vue) */
+  padding: calc(14px + var(--sat) + var(--timers, 0px)) calc(16px + var(--sar)) calc(var(--tabbar) + 28px + var(--sab)) calc(16px + var(--sal));
+  max-width: 640px;
+  margin: 0 auto;
+}
+.page.no-tabs {
+  padding-bottom: calc(28px + var(--sab));
+}
+.stack > * + * {
+  margin-top: 14px;
+}
+.stack-sm > * + * {
+  margin-top: 8px;
+}
+.muted {
+  color: var(--ink-2);
+}
+.small {
+  font-size: 15px;
+}
+.tiny {
+  font-size: 13px;
+}
+.center {
+  text-align: center;
+}
+.row {
+  display: -webkit-box;
+  display: flex;
+  align-items: center;
+}
+.row > * + * {
+  margin-left: 10px;
+}
+.grow {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.spread {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.spread > * + * {
+  margin-left: 12px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+}
+.topbar > * + * {
+  margin-left: 12px;
+}
+.topbar .sub {
+  color: var(--ink-2);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* ---------- Tarjetas ---------- */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 1px solid var(--line);
+}
+.card.tight {
+  padding: 12px 14px;
+}
+.chip {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: var(--surface-2);
+  color: var(--ink-2);
+  text-transform: uppercase;
+}
+.chip.horno {
+  background: var(--orange-bg);
+  color: var(--orange);
+}
+.chip.salsa {
+  background: var(--red-bg);
+  color: var(--red);
+}
+.chip.comodin {
+  background: var(--surface-2);
+  color: var(--ink-2);
+}
+.chip.ice {
+  background: var(--ice-bg);
+  color: var(--ice);
+}
+.chip.green {
+  background: var(--green-bg);
+  color: var(--green);
+}
+.chip + .chip {
+  margin-left: 6px;
+}
+
+/* ---------- Botones ---------- */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 54px;
+  padding: 12px 18px;
+  border-radius: 15px;
+  font-size: 18px;
+  font-weight: 800;
+  background: var(--surface-2);
+  color: var(--ink);
+  text-align: center;
+  text-decoration: none;
+  transition: transform 0.08s ease, opacity 0.15s;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.btn.primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn.green {
+  background: var(--green);
+  color: #06281a;
+}
+.btn.yellow {
+  background: var(--yellow);
+  color: #2a2100;
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--ink-2);
+  min-height: 48px;
+  font-weight: 700;
+}
+.btn.small {
+  min-height: 48px;
+  font-size: 16px;
+  padding: 8px 14px;
+  width: auto;
+}
+.btn.danger {
+  background: var(--red-bg);
+  color: var(--red);
+}
+.btn[disabled] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+.btn .ic {
+  margin-right: 8px;
+}
+.btns > * + * {
+  margin-top: 10px;
+}
+.btn-row {
+  display: flex;
+}
+.btn-row > * {
+  flex: 1 1 0;
+}
+.btn-row > * + * {
+  margin-left: 10px;
+}
+
+/* Control segmentado */
+.seg {
+  display: flex;
+  background: var(--surface-2);
+  border-radius: 14px;
+  padding: 4px;
+}
+.seg button {
+  flex: 1 1 0;
+  min-height: 48px;
+  border-radius: 11px;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--ink-2);
+}
+.seg button + button {
+  margin-left: 4px;
+}
+.seg button.on {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- Avisos ---------- */
+.banner {
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  font-weight: 700;
+}
+.banner.yellow {
+  background: var(--yellow);
+  color: #2a2100;
+}
+.banner.green {
+  background: var(--green-bg);
+  color: var(--green);
+}
+.banner.ice {
+  background: var(--ice-bg);
+  color: var(--ice);
+}
+.banner .btn {
+  margin-top: 10px;
+}
+
+/* ---------- Barra inferior ---------- */
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  display: flex;
+  background: rgba(13, 16, 21, 0.94);
+  border-top: 1px solid var(--line);
+  padding: 0 var(--sar) var(--sab) var(--sal);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+.tabbar a {
+  flex: 1 1 0;
+  height: var(--tabbar);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--ink-3);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+.tabbar a svg {
+  width: 26px;
+  height: 26px;
+  margin-bottom: 3px;
+}
+.tabbar a.on {
+  color: var(--ink);
+}
+.tabbar a {
+  position: relative;
+}
+.tabbar a .dot {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  margin-left: 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 99px;
+  background: var(--yellow);
+  border: 2px solid var(--bg);
+}
+
+/* ---------- Temporizadores (fijos arriba) ---------- */
+.timers {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 50;
+  padding: calc(6px + var(--sat)) calc(10px + var(--sar)) 6px calc(10px + var(--sal));
+  background: rgba(13, 16, 21, 0.96);
+  border-bottom: 1px solid var(--line);
+}
+.timer {
+  display: flex;
+  align-items: center;
+  background: var(--surface-2);
+  border-radius: 14px;
+  padding: 6px 6px 6px 14px;
+  min-height: 52px;
+}
+.timer + .timer {
+  margin-top: 6px;
+}
+.timer .t-label {
+  flex: 1 1 auto;
+  font-weight: 800;
+  font-size: 18px;
+}
+.timer .t-time {
+  font-size: 24px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  margin-right: 8px;
+}
+.timer .t-x {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  font-size: 20px;
+  color: var(--ink-2);
+}
+.timer.done {
+  background: var(--yellow);
+  color: #2a2100;
+  -webkit-animation: pulse 1s ease-in-out infinite;
+  animation: pulse 1s ease-in-out infinite;
+}
+.timer.done .t-x {
+  background: rgba(0, 0, 0, 0.12);
+  color: #2a2100;
+  width: auto;
+  padding: 0 14px;
+  font-weight: 900;
+  font-size: 17px;
+}
+.timers-space {
+  height: calc(var(--timers, 0px) + var(--sat));
+}
+@-webkit-keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
+}
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed;
+  left: calc(12px + var(--sal));
+  right: calc(12px + var(--sar));
+  bottom: calc(var(--tabbar) + 12px + var(--sab));
+  z-index: 60;
+  background: #2b3341;
+  border: 1px solid #3a4352;
+  color: var(--ink);
+  border-radius: 16px;
+  padding: 12px 12px 12px 16px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  max-width: 616px;
+  margin: 0 auto;
+}
+.toast > span {
+  flex: 1 1 auto;
+}
+.toast button {
+  margin-left: 10px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  font-weight: 900;
+  color: var(--yellow);
+}
+
+/* ---------- Formularios ---------- */
+.field {
+  display: block;
+}
+.field > span {
+  display: block;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+.input {
+  width: 100%;
+  min-height: 52px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--ink);
+  font-size: 18px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+select.input {
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink-2) 50%), linear-gradient(135deg, var(--ink-2) 50%, transparent 50%);
+  background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 36px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    -webkit-animation: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
